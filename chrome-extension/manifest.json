@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Text Input Extension",
+  "version": "1.0",
+  "description": "A Chrome extension that allows users to enter text and submit it to a POST API endpoint.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "contextMenus"
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icon16.png"
+    }
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content.js"]
+    }
+  ],
+  "icons": {
+    "16": "icon16.png"
+  }
+}
