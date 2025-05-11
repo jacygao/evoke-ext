@@ -10,6 +10,11 @@ h1 {
     margin-bottom: 10px;
 }
 
+textarea, button {
+    width: 100%;
+    box-sizing: border-box; /* Ensures padding and borders are included in the width */
+}
+
 input[type="text"] {
     width: 100%;
     padding: 10px;
@@ -18,8 +23,17 @@ input[type="text"] {
     border-radius: 4px;
 }
 
-button {
+textarea {
     width: 100%;
+    resize: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%; /* Ensures the button spans the full width */
     padding: 10px;
     background-color: #4CAF50;
     color: white;

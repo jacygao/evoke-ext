@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
       id: "addToNotes",
-      title: "Add to My Notes",
+      title: "Add to Studybox",
       contexts: ["selection"]
     });
   });
