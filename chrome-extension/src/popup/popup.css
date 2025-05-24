@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif; /* Use Roboto for a modern look */
+    margin: 0;
     margin: 0;
     padding: 20px;
     width: 300px;
@@ -8,28 +11,33 @@ body {
 h1 {
     font-size: 20px;
     margin-bottom: 10px;
+    font-family: 'Roboto', Arial, sans-serif; /* Use Roboto for a modern look */
 }
 
 textarea, button {
     width: 100%;
     box-sizing: border-box; /* Ensures padding and borders are included in the width */
+    font-family: 'Roboto', Arial, sans-serif; /* Apply the modern font */
 }
 
 input[type="text"] {
-    width: 100%;
+    width: 100%; /* Ensures the input spans the full width */
     padding: 10px;
-    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box; /* Includes padding and border in the width */
+    font-family: 'Roboto', Arial, sans-serif; /* Apply the modern font */
 }
 
 textarea {
+    margin-top: 15px;
     width: 100%;
     resize: none;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-family: 'Roboto', Arial, sans-serif; /* Apply the modern font */
 }
 
 button {
@@ -40,8 +48,58 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-bottom: 10px;
 }
 
 button:hover {
     background-color: #45a049;
+}
+
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.note-card {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', Arial, sans-serif; /* Apply the modern font */
+}
+
+.menu {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    border-bottom: 1px solid #ccc;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none; /* Remove background color */
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin-left: 12px; /* Add spacing between buttons */
+    padding: 0; /* Remove padding */
+    width: 16px; /* Set width to match icon size */
+    height: 16px; /* Set height to match icon size */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.menu-item:hover {
+    background: none; /* Explicitly set no background on hover */
+}
+
+.menu-icon {
+    font-size: 16px;
+    margin: 0; /* Remove padding/margin around icons */
+    color: #333; /* Default icon color */
 }

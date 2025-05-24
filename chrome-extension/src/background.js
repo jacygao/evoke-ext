@@ -1,23 +1,34 @@
-// This file contains the background script for the Chrome extension. 
-// It manages events and can handle API calls or other background tasks.
-
 chrome.runtime.onInstalled.addListener(() => {
-    console.log('Chrome extension installed.');
+  console.log('Chrome extension installed.');
+  chrome.contextMenus.create({
+    id: "addToNotes",
+    title: "Neuralize",
+    contexts: ["selection"]
+  });
 });
 
-// You can add more event listeners or functions to handle background tasks here.
-chrome.runtime.onInstalled.addListener(() => {
-    chrome.contextMenus.create({
-      id: "addToNotes",
-      title: "Add to Studybox",
-      contexts: ["selection"]
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "addToNotes" && info.selectionText) {
+    // Send selected text to your API endpoint
+    fetch('http://localhost:7174/api/notes?code=', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'userId': "dd6d5e42-1516-4dfd-9e04-42047e5e4a0c"
+      },
+      body: JSON.stringify({ content: info.selectionText })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('API response:', data);
+      // Optionally, store or use the response
+    })
+    .catch(error => {
+      console.error('API error:', error);
     });
-  });
-  
-  chrome.contextMenus.onClicked.addListener((info, tab) => {
-    if (info.menuItemId === "addToNotes" && info.selectionText) {
-      chrome.storage.local.set({ selectedText: info.selectionText }, () => {
-        chrome.action.openPopup();
-      });
-    }
-  });
+  }
+});
+
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error) => console.error(error));

@@ -1,18 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "Text Input Extension",
+  "name": "neurolize.io",
   "version": "1.0",
   "description": "A Chrome extension that allows users to enter text and submit it to a POST API endpoint.",
   "permissions": [
     "activeTab",
     "scripting",
-    "contextMenus"
+    "contextMenus",
+    "storage",
+    "sidePanel"
   ],
   "action": {
-    "default_popup": "src/popup/popup.html",
     "default_icon": {
       "16": "icon16.png"
-    }
+    },
+    "default_title": "neurolize.io"
   },
   "background": {
     "service_worker": "src/background.js"
@@ -23,6 +25,9 @@
       "js": ["src/content.js"]
     }
   ],
+  "side_panel": {
+    "default_path": "src/popup/notes.html"
+  },
   "icons": {
     "16": "icon16.png"
   }
