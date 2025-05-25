@@ -27,6 +27,7 @@ input[type="text"] {
     border-radius: 4px;
     box-sizing: border-box; /* Includes padding and border in the width */
     font-family: 'Roboto', Arial, sans-serif; /* Apply the modern font */
+    margin-bottom: 15px; /* Add space below the input field */
 }
 
 textarea {
@@ -102,4 +103,41 @@ button:hover {
     font-size: 16px;
     margin: 0; /* Remove padding/margin around icons */
     color: #333; /* Default icon color */
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1000;
+    min-width: 100px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 10px;
+    text-align: left;
+    background: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background-color: #f4f4f4;
 }

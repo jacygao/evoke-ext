@@ -1,24 +1,33 @@
 {
   "manifest_version": 3,
-  "name": "neurolize.io",
+  "name": "neurolize.ai",
   "version": "1.0",
-  "description": "A Chrome extension that allows users to enter text and submit it to a POST API endpoint.",
+  "description": "A Chrome extension that allows users to learn interactively with AI.",
+  "author": "neurolize.ai",
   "permissions": [
     "activeTab",
-    "scripting",
     "contextMenus",
     "storage",
-    "sidePanel"
+    "sidePanel",
+    "identity"
   ],
+  "oauth2": {
+    "client_id": "942582519364-gn4puh22ulc8o1tceaog16m19gi54p3q.apps.googleusercontent.com",
+    "scopes": ["profile", "email"]
+  },
   "action": {
     "default_icon": {
       "16": "icon16.png"
     },
-    "default_title": "neurolize.io"
+    "default_title": "neurolize.ai"
   },
   "background": {
-    "service_worker": "src/background.js"
+    "service_worker": "src/background.js",
+    "type": "module"
   },
+  "host_permissions": [
+    "http://localhost:7174/*"
+  ],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -26,7 +35,7 @@
     }
   ],
   "side_panel": {
-    "default_path": "src/popup/notes.html"
+    "default_path": "src/popup/login.html"
   },
   "icons": {
     "16": "icon16.png"
