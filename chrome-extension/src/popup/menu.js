@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Logout functionality
             const logoutButton = document.getElementById('logoutButton');
             logoutButton.addEventListener('click', () => {
-                chrome.storage.local.remove(['username', 'token'], () => {
-                    console.log('Username and token cleared from storage.');
+                chrome.storage.local.clear(() => {
+                    console.log('All local storage data cleared.');
                     window.location.href = 'login.html'; // Redirect to login page
                 });
             });

@@ -12,7 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     data.slice().reverse().forEach(note => {
                         const noteCard = document.createElement('div');
                         noteCard.className = 'note-card';
-                        const formattedContent = note.content.replace(/\n/g, '<br>');
+                        // Replace **word** with <b>word</b> and newlines with <br>
+                        const formattedContent = note.content
+                            .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+                            .replace(/\n/g, '<br>');
                         noteCard.innerHTML = `<p>${formattedContent}</p>`;
                         notesContainer.appendChild(noteCard);
                     });

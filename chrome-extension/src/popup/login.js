@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle Google login button click
     const googleLoginButton = document.getElementById('googleLoginButton');
     googleLoginButton.addEventListener('click', () => {
+        // Add loading class and disable the button
+        googleLoginButton.classList.add('loading');
+        googleLoginButton.disabled = true;
+
         chrome.identity.launchWebAuthFlow(
             {
                 url: `https://accounts.google.com/o/oauth2/auth?client_id=942582519364-gn4puh22ulc8o1tceaog16m19gi54p3q.apps.googleusercontent.com&response_type=token id_token&redirect_uri=${chrome.identity.getRedirectURL()}&scope=openid profile email`,
@@ -20,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
             (redirectUrl) => {
                 if (chrome.runtime.lastError || !redirectUrl) {
                     console.error('Google login failed:', chrome.runtime.lastError);
+                    // Remove loading class and re-enable the button
+                    googleLoginButton.classList.remove('loading');
+                    googleLoginButton.disabled = false;
                     return;
                 }
 
@@ -30,9 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!idToken || !accessToken) {
                     console.error('ID Token or Access Token not found in redirect URL.');
+                    // Remove loading class and re-enable the button
+                    googleLoginButton.classList.remove('loading');
+                    googleLoginButton.disabled = false;
                     return;
                 }
-                alert(accessToken);
 
                 // Perform both fetch calls
                 const validateIdToken = fetch('https://evoke-api-ae.azurewebsites.net/.auth/login/google', {
@@ -59,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 name: userInfo.name,
                                 portrait: userInfo.picture,
                                 token: validationResponse.authenticationToken,
-                                userToken: accessToken
+                                userToken: idToken
                             }, () => {
                                 // Redirect to notes.html
                                 window.location.href = 'notes.html';
@@ -70,6 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                     .catch(error => {
                         console.error('Error during authentication or fetching user info:', error);
+                    })
+                    .finally(() => {
+                        // Remove loading class and re-enable the button
+                        googleLoginButton.classList.remove('loading');
+                        googleLoginButton.disabled = false;
                     });
             }
         );
