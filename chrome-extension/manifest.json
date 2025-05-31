@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "neurolize.ai",
+  "name": "neuronize.io",
   "version": "1.0",
   "description": "A Chrome extension that allows users to learn interactively with AI.",
-  "author": "neurolize.ai",
+  "author": "neuronize.io",
   "permissions": [
     "activeTab",
     "contextMenus",
@@ -19,7 +19,7 @@
     "default_icon": {
       "16": "icon16.png"
     },
-    "default_title": "neurolize.ai"
+    "default_title": "neuronize.io"
   },
   "background": {
     "service_worker": "src/background.js",

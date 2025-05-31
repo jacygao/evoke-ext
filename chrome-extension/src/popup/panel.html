@@ -4,8 +4,20 @@
 <body>
     <div id="menu"></div> <!-- Placeholder for the header -->
     <div class="container">
-        <textarea id="textInput" rows="4" cols="30" placeholder="Type or paste your notes here..."></textarea>
-        <button id="submitButton">Neuralize</button>
+        <div id="chatContainer" class="chat-container">
+            <!-- Chat messages will be dynamically added here -->
+        </div>
+        <div class="chat-input-container">
+            <textarea id="chatInput" rows="1" placeholder="Type your message..."></textarea>
+            <div class="menu-bar">
+                <div class="menu-options">
+                    <!-- Add menu options here if needed -->
+                </div>
+                <button id="sendButton" class="send-button">
+                    <i class="fas fa-paper-plane"></i> <!-- Font Awesome paper plane icon -->
+                </button>
+            </div>
+        </div>
     </div>
     <script type="module" src="panel.js"></script>
     <script src="head.js"></script> <!-- Script to load the head section -->

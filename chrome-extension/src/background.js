@@ -4,7 +4,7 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log('Chrome extension installed.');
   chrome.contextMenus.create({
     id: "addToNotes",
-    title: "Neuralize",
+    title: "Neuronize",
     contexts: ["selection"]
   });
 });
