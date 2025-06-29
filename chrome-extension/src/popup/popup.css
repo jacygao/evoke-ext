@@ -243,6 +243,7 @@ textarea:disabled {
     overflow-y: auto; /* Enable scrolling for overflow */
     border-radius: 8px;
     margin-top: 10px;
+    padding-bottom: 10px; /* Add padding at the bottom for better spacing */
     max-height: calc(100vh - 150px); /* Dynamically adjust height based on viewport */
     transition: max-height 0.2s ease; /* Smooth transition for height changes */
 }
@@ -363,4 +364,21 @@ textarea:disabled {
 .menu-button img {
     width: 15px;
     height: 15px;
+}
+
+.menu-button.audio-loading {
+    opacity: 0.6;
+}
+
+.loading-animated .dot {
+    opacity: 0.6;
+    animation: blink 1s infinite;
+}
+
+.loading-animated .dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-animated .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
 }

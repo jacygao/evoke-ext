@@ -56,21 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const menuBar = document.createElement('div');
         menuBar.className = 'bot-menu-bar';
 
-        // Copy button
-        const copyButton = document.createElement('button');
-        copyButton.className = 'menu-button copy-button';
-        copyButton.innerHTML = '<i class="fas fa-copy"></i>'; // Font Awesome copy icon
-        copyButton.title = 'Copy';
-        copyButton.addEventListener('click', () => {
-            navigator.clipboard.writeText(messageElement.textContent).then(() => {});
-        });
-
         // Audio button
         const audioButton = document.createElement('button');
         audioButton.className = 'menu-button audio-button';
         audioButton.innerHTML = '<i class="fas fa-volume-up"></i>'; // Font Awesome audio icon
         audioButton.title = 'Play Audio';
         audioButton.addEventListener('click', async () => {
+            audioButton.disabled = true;
+            audioButton.classList.add('audio-loading'); // Add animation class
             try {
                 const response = await fetchWithAuth('notes/read', {
                     method: 'POST',
@@ -81,9 +74,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const audioBlob = await response.blob();
                 const audioUrl = URL.createObjectURL(audioBlob);
                 const audio = new Audio(audioUrl);
+
+                audio.onended = () => {
+                    audioButton.disabled = false;
+                    audioButton.classList.remove('audio-loading');
+                };
+
                 audio.play();
             } catch (err) {
                 console.error(err);
+                audioButton.disabled = false;
+                audioButton.classList.remove('audio-loading');
             }
         });
 
@@ -110,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Append buttons to the menu bar
-        menuBar.appendChild(copyButton);
         menuBar.appendChild(audioButton);
         menuBar.appendChild(neuronizeButton);
 
@@ -142,7 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
         addMessage(userInput, 'user');
 
         // Show loading message
-        const loadingElement = addMessage('preparing your note...', 'bot', true);
+        const loadingElement = addMessage('<span class="loading-animated">I am preparing your note<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>', 'bot', true);
+        loadingElement.querySelectorAll('.dot').forEach((dot, i) => {
+            dot.style.animationDelay = `${i * 0.2}s`;
+        });
 
         // Clear the input field and reset rows
         chatInput.value = '';
@@ -159,9 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
             body: JSON.stringify({ content: userInput })
         })
             .then(data => {
-                // Remove the loading message
-                loadingElement.remove();
-
                 // Extract the content field from the response
                 const botResponse = data.content || 'Your note has been saved!';
                 const botMessageElement = addMessage(botResponse, 'bot', true); // Add an empty message element
@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Re-enable the input field and button
                 sendButton.disabled = false;
                 chatInput.disabled = false;
+                loadingElement.remove();
             });
     });
 
