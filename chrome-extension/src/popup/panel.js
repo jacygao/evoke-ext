@@ -126,57 +126,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function sendMessage(userInput) {
+    if (!userInput) {
+        alert('Please enter a message.');
+        return;
+    }
+
+    removeAllBotMenus();
+    addMessage(userInput, 'user');
+
+    const loadingElement = addMessage('<span class="loading-animated">preparing your note<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>', 'bot', true);
+    loadingElement.querySelectorAll('.dot').forEach((dot, i) => {
+        dot.style.animationDelay = `${i * 0.2}s`;
+    });
+
+    chatInput.value = '';
+    chatInput.style.overflowY = 'hidden';
+    chatInput.rows = 1;
+    sendButton.disabled = true;
+    chatInput.disabled = true;
+
+    fetchWithAuth('notes/complete', {
+        method: 'POST',
+        body: JSON.stringify({ content: userInput })
+    })
+        .then(data => {
+            loadingElement.remove();
+            const botResponse = data.content || 'Your note has been saved!';
+            const botMessageElement = addMessage(botResponse, 'bot', false);
+            addMenuBar(botMessageElement, data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loadingElement.textContent = 'Failed to process your message. Please try again.';
+        })
+        .finally(() => {
+            sendButton.disabled = false;
+            chatInput.disabled = false;
+        });
+    }
+
     // Handle send button click
     sendButton.addEventListener('click', () => {
         const userInput = chatInput.value.trim();
-
-        if (!userInput) {
-            alert('Please enter a message.');
-            return;
-        }
-
-        // Remove all existing bot menus
-        removeAllBotMenus();
-
-        // Add user message to the chat
-        addMessage(userInput, 'user');
-
-        // Show loading message
-        const loadingElement = addMessage('<span class="loading-animated">I am preparing your note<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>', 'bot', true);
-        loadingElement.querySelectorAll('.dot').forEach((dot, i) => {
-            dot.style.animationDelay = `${i * 0.2}s`;
-        });
-
-        // Clear the input field and reset rows
-        chatInput.value = '';
-        chatInput.style.overflowY = 'hidden'; // Reset scrollbar
-        chatInput.rows = 1; // Reset rows to 1
-
-        // Disable the button and input field during processing
-        sendButton.disabled = true;
-        chatInput.disabled = true;
-
-        // Use fetchWithAuth for the API call
-        fetchWithAuth('notes/complete', {
-            method: 'POST',
-            body: JSON.stringify({ content: userInput })
-        })
-            .then(data => {
-                // Extract the content field from the response
-                const botResponse = data.content || 'Your note has been saved!';
-                const botMessageElement = addMessage(botResponse, 'bot', true); // Add an empty message element
-                addMenuBar(botMessageElement, data); // Add menu bar after message
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                addMessage('Failed to process your message. Please try again.', 'bot', true); // Mark as error
-            })
-            .finally(() => {
-                // Re-enable the input field and button
-                sendButton.disabled = false;
-                chatInput.disabled = false;
-                loadingElement.remove();
-            });
+        sendMessage(userInput);
     });
 
     // Allow pressing Enter to send the message
@@ -184,6 +177,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             sendButton.click();
+        }
+    });
+
+    // Notify background that the panel is ready
+    chrome.runtime.sendMessage({ action: "panelReady" });
+    
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === "sendNeuronizeMessage" && request.content) {
+            // Optionally, set the chat input value
+            chatInput.value = request.content;
+
+            // Call the send logic directly (simulate sendButton click)
+            sendMessage(request.content);
         }
     });
 });

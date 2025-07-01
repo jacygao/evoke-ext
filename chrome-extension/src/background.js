@@ -16,19 +16,22 @@ chrome.runtime.onInstalled.addListener(() => {
     .catch((error) => console.error("Error setting side panel options:", error));
 });
 
+let pendingNeuronizeContent = null;
+
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  
   if (info.menuItemId === "addToNotes" && info.selectionText) {
-    // Store the selected content in local storage
-    chrome.storage.local.set({ neuronizeContent: info.selectionText }, () => {
-      // Open the side panel
-      chrome.sidePanel
-        .open({tabId: tab.id})
-        chrome.sidePanel.setOptions({
-          tabId: sender.tab.id,
-          path: 'src/popup/panel.html',
-          enabled: true
-        });
+    pendingNeuronizeContent = info.selectionText;
+    chrome.sidePanel.open({tabId: tab.id});
+  }
+});
+
+// Listen for panel ready and send the content
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "panelReady" && pendingNeuronizeContent) {
+    chrome.runtime.sendMessage({
+      action: "sendNeuronizeMessage",
+      content: pendingNeuronizeContent
     });
+    pendingNeuronizeContent = null;
   }
 });
