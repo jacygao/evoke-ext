@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const { username, token } = result;
         if (username && token) {
             // Redirect to notes.html if both exist
-            window.location.href = 'notes.html';
+            window.location.href = 'panel.html';
             return;
         }
     });

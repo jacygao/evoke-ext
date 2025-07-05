@@ -3,7 +3,7 @@
 body {
     font-family: 'Roboto', Arial, sans-serif; /* Use Roboto for a modern look */
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     width: 100%; /* Set width to 100% to allow dynamic resizing */
     max-width: 500px; /* Optional: Set a maximum width for better usability */
     box-sizing: border-box; /* Include padding and border in the width */
@@ -242,8 +242,8 @@ textarea:disabled {
     flex-grow: 1; /* Allow the chat container to take up available space */
     overflow-y: auto; /* Enable scrolling for overflow */
     border-radius: 8px;
-    padding: 10px;
     margin-top: 10px;
+    padding-bottom: 10px; /* Add padding at the bottom for better spacing */
     max-height: calc(100vh - 150px); /* Dynamically adjust height based on viewport */
     transition: max-height 0.2s ease; /* Smooth transition for height changes */
 }
@@ -258,7 +258,7 @@ textarea:disabled {
     background-color: #ffffff; /* Clean white background */
     padding: 10px;
     border-top: 1px solid #e0e0e0; /* Subtle border to separate from chat messages */
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Floating effect with shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
     z-index: 10; /* Ensure it stays above other elements */
     border-radius: 12px; /* Rounded corners at the top */
     transition: height 0.2s ease; /* Smooth height transition */
@@ -270,7 +270,7 @@ textarea:disabled {
     resize: none; /* Disable manual resizing */
     border: none;
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 12px;
     font-family: 'Roboto', Arial, sans-serif;
     font-size: 15px;
     line-height: 1.5;
@@ -333,4 +333,52 @@ textarea:disabled {
     color: #aaa; /* Greyed-out icon when disabled */
     cursor: not-allowed; /* Show not-allowed cursor */
     background: none; /* No background when disabled */
+}
+
+/* Bot menu bar styling */
+.bot-menu-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+    color: #333; /* Same color as the top menu items */
+}
+
+.menu-button:hover {
+    background-color: #f4f4f4;
+}
+
+.menu-button img {
+    width: 15px;
+    height: 15px;
+}
+
+.menu-button.audio-loading {
+    opacity: 0.6;
+}
+
+.loading-animated .dot {
+    opacity: 0.6;
+    animation: blink 1s infinite;
+}
+
+.loading-animated .dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-animated .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
 }

@@ -1,5 +1,3 @@
-import { fetchWithAuth } from './fetch.js';
-
 chrome.runtime.onInstalled.addListener(() => {
   console.log('Chrome extension installed.');
   chrome.contextMenus.create({
@@ -7,33 +5,33 @@ chrome.runtime.onInstalled.addListener(() => {
     title: "Neuronize",
     contexts: ["selection"]
   });
+
+  // Set the default side panel options
+  chrome.sidePanel
+    .setOptions({
+      path: "src/popup/panel.html", // Path to the panel page
+      enabled: true,
+      openPanelOnActionClick: true
+    })
+    .catch((error) => console.error("Error setting side panel options:", error));
 });
+
+let pendingNeuronizeContent = null;
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "addToNotes" && info.selectionText) {
-    // Use fetchWithAuth for the API call
-    fetchWithAuth('notes?code=', {
-      method: 'POST',
-      body: JSON.stringify({ content: info.selectionText })
-    })
-      .then(data => {
-        console.log('API response:', data);
-        // Optionally, store or use the response
-      })
-      .catch(error => {
-        if (error.message.includes('Missing bearerToken or userId')) {
-          // If credentials are missing, open the side panel
-          chrome.sidePanel.setOptions({
-            path: "src/popup/login.html", // Path to the login page
-            enabled: true
-          }).catch(err => console.error('Error opening side panel:', err));
-        } else {
-          console.error('API error:', error);
-        }
-      });
+    pendingNeuronizeContent = info.selectionText;
+    chrome.sidePanel.open({tabId: tab.id});
   }
 });
 
-chrome.sidePanel
-  .setPanelBehavior({ openPanelOnActionClick: true })
-  .catch((error) => console.error(error));
+// Listen for panel ready and send the content
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "panelReady" && pendingNeuronizeContent) {
+    chrome.runtime.sendMessage({
+      action: "sendNeuronizeMessage",
+      content: pendingNeuronizeContent
+    });
+    pendingNeuronizeContent = null;
+  }
+});

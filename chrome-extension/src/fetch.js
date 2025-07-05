@@ -1,5 +1,5 @@
-let API_URL = "https://evoke-api-ae.azurewebsites.net/api";
-// let API_URL = "http://localhost:7174/api"
+// let API_URL = "https://evoke-api-ae.azurewebsites.net/api";
+let API_URL = "http://localhost:7174/api"
 /**
  * Common function to make API requests with authentication.
  * @param {string} endpoint - The API endpoint (relative to the base URL).
