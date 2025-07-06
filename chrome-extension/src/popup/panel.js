@@ -31,10 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         messageElement.className = `chat-message ${sender}`;
         if (sender === 'bot') {
             messageElement.innerHTML = parseMarkdown(content); // Render formatted content for bot messages
-            if (!hideMenu) {
-                // Add menu bar after the message is rendered
-                setTimeout(() => addMenuBar(messageElement), 50); // Delay to ensure typing effect completes
-            }
+            // Remove the automatic menu bar addition here
         } else {
             messageElement.textContent = content; // Use textContent for user messages
         }
@@ -154,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingElement.remove();
             const botResponse = data.content || 'Your note has been saved!';
             const botMessageElement = addMessage(botResponse, 'bot', false);
+            // Only add menu bar here, once
             addMenuBar(botMessageElement, data);
         })
         .catch(error => {
@@ -183,12 +181,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Notify background that the panel is ready
     chrome.runtime.sendMessage({ action: "panelReady" });
     
+    // Listen for messages from background script via tabs API
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === "sendNeuronizeMessage" && request.content) {
-            // Optionally, set the chat input value
             chatInput.value = request.content;
-
-            // Call the send logic directly (simulate sendButton click)
             sendMessage(request.content);
         }
     });
